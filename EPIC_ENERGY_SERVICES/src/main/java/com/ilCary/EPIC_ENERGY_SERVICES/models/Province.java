@@ -21,9 +21,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Province {
 
-	  @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
-	  
-	private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	private String nome;
+
+	private String sigla;
+
+	private String regione;
 }
