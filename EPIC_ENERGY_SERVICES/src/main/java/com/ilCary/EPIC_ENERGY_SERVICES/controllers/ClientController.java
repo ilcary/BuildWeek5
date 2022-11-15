@@ -1,5 +1,6 @@
 package com.ilCary.EPIC_ENERGY_SERVICES.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Client;
+import com.ilCary.EPIC_ENERGY_SERVICES.models.User;
 import com.ilCary.EPIC_ENERGY_SERVICES.services.ClientService;
 
 @RestController
@@ -27,14 +30,35 @@ public class ClientController {
 
     @PostMapping
     public Client saveClient(
-//          TODO gestire il post
-//            @Valid
-//            @RequestParam("name") String name,
-//            @RequestParam(value="address",required=false) String address,
+            @RequestParam(value="pec",required=false) String pec,
+            @RequestParam(value="email",required=true) String email,
+            @RequestParam(value="emailContatto",required=false) String emailContatto,
+            @RequestParam(value="telefono",required=true) String telefono,
+            @RequestParam(value="telefonoContatto",required=true) String telefonoContatto,
+            @RequestParam(value="partitaIva",required=false) String partitaIva,
+            @RequestParam(value="ragioneSociale",required=true) String ragioneSociale,
+            @RequestParam(value="dataInserimento",required=true) LocalDate dataInserimento,
+            @RequestParam(value="dataUltimoContatto",required=true) LocalDate dataUltimoContatto,
+            @RequestParam(value="fatturatoAnnuale",required=true) Double fatturatoAnnuale,
+            @RequestParam(value="nomeContatto",required=true) String nomeContatto,
+            @RequestParam(value="cognomeContatto",required=true) String cognomeContatto
     ) {
-        Client client = Client.builder().build();
+    	Client client = Client.builder()
+        		.pec(pec)
+        		.email(email)
+        		.emailContatto(emailContatto)
+        		.telefono(telefono)
+        		.telefonoContatto(telefonoContatto)
+        		.partitaIva(partitaIva)
+        		.ragioneSociale(ragioneSociale)
+        		.dataInserimento(dataInserimento)
+        		.dataUltimoContatto(dataUltimoContatto)
+        		.fatturatoAnnuale(fatturatoAnnuale)
+        		.nomeContatto(nomeContatto)
+        		.cognomeContatto(cognomeContatto)
+        		.build();
 
-        logger.info("Save Client in ClientController");
+        logger.info("Save client in SaveController");
         return clientService.save(client);
     }
 
@@ -56,14 +80,36 @@ public class ClientController {
 
     @PutMapping("{id}")
     public Client updateClient(
-            @PathVariable("id") Long id
-//            @RequestParam("name") String name
+            @PathVariable("id") Long id,
+            @RequestParam(value="pec",required=false) String pec,
+            @RequestParam(value="email",required=false) String email,
+            @RequestParam(value="emailContatto",required=false) String emailContatto,
+            @RequestParam(value="telefono",required=false) String telefono,
+            @RequestParam(value="telefonoContatto",required=false) String telefonoContatto,
+            @RequestParam(value="partitaIva",required=false) String partitaIva,
+            @RequestParam(value="ragioneSociale",required=false) String ragioneSociale,
+            @RequestParam(value="dataInserimento",required=false) LocalDate dataInserimento,
+            @RequestParam(value="dataUltimoContatto",required=false) LocalDate dataUltimoContatto,
+            @RequestParam(value="fatturatoAnnuale",required=false) Double fatturatoAnnuale,
+            @RequestParam(value="nomeContatto",required=false) String nomeContatto,
+            @RequestParam(value="cognomeContatto",required=false) String cognomeContatto
             ) {
 
         Client client = clientService.getById(id);
 
-        //TODO gestire il put
-
+        if(pec != null) client.setPec(pec);
+        if(email != null) client.setEmail(emailContatto);
+        if(emailContatto != null) client.setEmailContatto(emailContatto);
+        if(telefono != null) client.setTelefono(telefono);
+        if(telefonoContatto != null) client.setTelefonoContatto(telefonoContatto);
+        if(partitaIva != null) client.setPartitaIva(partitaIva);
+        if(ragioneSociale != null) client.setRagioneSociale(ragioneSociale);
+        if(dataInserimento != null) client.setDataInserimento(dataInserimento);
+        if(dataUltimoContatto != null) client.setDataUltimoContatto(dataUltimoContatto);
+        if(fatturatoAnnuale != null) client.setFatturatoAnnuale(fatturatoAnnuale);
+        if(nomeContatto != null) client.setNomeContatto(nomeContatto);
+        if(cognomeContatto != null) client.setCognomeContatto(cognomeContatto);
+        
         clientService.save(client);
         return client;
     }

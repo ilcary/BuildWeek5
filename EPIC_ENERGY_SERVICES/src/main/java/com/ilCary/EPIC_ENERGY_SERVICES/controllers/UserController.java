@@ -78,13 +78,21 @@ public class UserController {
 
     @PutMapping("{id}")
     public User updateUser(
-            @PathVariable("id") Long id
-//            @RequestParam("name") String name
+            @PathVariable("id") Long id,
+            @RequestParam(value="name",required=false) String name,
+            @RequestParam(value="lastname",required=false) String lastname,
+            @RequestParam(value="username",required=false) String username,
+            @RequestParam(value="email",required=false) String email,
+            @RequestParam(value="password",required=false) String password
             ) {
 
         User user = userService.getById(id);
 
-        //TODO gestire il put
+        if(name != null) user.setName(name);
+        if(lastname != null) user.setLastname(lastname);
+        if(username != null) user.setUsername(username);
+        if(email != null) user.setEmail(email);
+        if(password != null) user.setPassword(password);
 
         userService.save(user);
         return user;

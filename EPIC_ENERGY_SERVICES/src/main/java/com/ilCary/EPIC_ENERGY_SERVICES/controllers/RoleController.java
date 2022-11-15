@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Role;
+import com.ilCary.EPIC_ENERGY_SERVICES.models.RoleType;
 import com.ilCary.EPIC_ENERGY_SERVICES.services.RoleService;
 
 @RestController
@@ -27,10 +29,9 @@ public class RoleController {
 
     @PostMapping
     public Role saveRole(
-//          TODO gestire il post
-//            @Valid
-//            @RequestParam("name") String name,
-//            @RequestParam(value="address",required=false) String address,
+
+            @RequestParam(value="roleType",required=false) RoleType roleType
+            
     ) {
         Role role = Role.builder().build();
 
@@ -56,13 +57,12 @@ public class RoleController {
 
     @PutMapping("{id}")
     public Role updateRole(
-            @PathVariable("id") Long id
-//            @RequestParam("name") String name
+            @PathVariable("id") Long id,
+            @RequestParam(value="roleType",required=false) RoleType roleType
             ) {
 
         Role role = roleService.getById(id);
-
-        //TODO gestire il put
+        if(roleType != null) role.setRoleType(roleType);
 
         roleService.save(role);
         return role;
