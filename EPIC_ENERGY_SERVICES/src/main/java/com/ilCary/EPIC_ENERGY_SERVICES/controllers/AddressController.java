@@ -26,6 +26,21 @@ public class AddressController {
 
     @Autowired
     private AddressService addressService;
+    
+    
+//---------------------------- Get ---------------------------------
+    
+    @GetMapping
+    public List<Address> getAddressList() {
+        return addressService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public Address getAddressById(@PathVariable("id") Long id) {
+        return addressService.getById(id);
+    }
+    
+//---------------------------- Post --------------------------------
 
     @PostMapping
     public Address saveAddress(
@@ -47,22 +62,8 @@ public class AddressController {
         return addressService.save(address);
     }
 
-    @GetMapping
-    public List<Address> getAddressList() {
-        return addressService.getAll();
-    }
-
-    @GetMapping("{id}")
-    public Address getAddressById(@PathVariable("id") Long id) {
-        return addressService.getById(id);
-    }
-
-    @DeleteMapping("{id}")
-    public String deleteAddressById(@PathVariable("id") Long id) {
-        addressService.deleteById(id);
-        return "Address deleted successfully";
-    }
-
+//---------------------------- Put ---------------------------------    
+    
     @PutMapping("{id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public Address updateUser(@PathVariable("id") Long id,
@@ -84,5 +85,13 @@ public class AddressController {
         addressService.save(address);
         return address;
     }
+    
+//---------------------------- Delete -------------------------------
 
+    @DeleteMapping("{id}")
+    public String deleteAddressById(@PathVariable("id") Long id) {
+        addressService.deleteById(id);
+        return "Address deleted successfully";
+    }
+    
 }

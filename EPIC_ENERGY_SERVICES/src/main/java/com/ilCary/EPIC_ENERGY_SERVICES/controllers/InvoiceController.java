@@ -28,6 +28,21 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+    
+//---------------------------- Get ---------------------------------
+    
+    @GetMapping
+    public List<Invoice> getInvoiceList() {
+        return invoiceService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public Invoice getInvoiceById(@PathVariable("id") Long id) {
+        return invoiceService.getById(id);
+    }
+    
+//---------------------------- Post --------------------------------
+
     @PostMapping
     public Invoice saveInvoice(
 
@@ -42,22 +57,9 @@ public class InvoiceController {
         logger.info("Save Invoice in InvoiceController");
         return invoiceService.save(invoice);
     }
-
-    @GetMapping
-    public List<Invoice> getInvoiceList() {
-        return invoiceService.getAll();
-    }
-
-    @GetMapping("{id}")
-    public Invoice getInvoiceById(@PathVariable("id") Long id) {
-        return invoiceService.getById(id);
-    }
-
-    @DeleteMapping("{id}")
-    public String deleteInvoiceById(@PathVariable("id") Long id) {
-        invoiceService.deleteById(id);
-        return "Invoice deleted successfully";
-    }
+    
+    
+//---------------------------- Put ---------------------------------    
 
     @PutMapping("{id}")
     public Invoice updateInvoice(
@@ -78,5 +80,14 @@ public class InvoiceController {
         invoiceService.save(invoice);
         return invoice;
     }
+    
+//---------------------------- Delete -------------------------------
 
+    @DeleteMapping("{id}")
+    public String deleteInvoiceById(@PathVariable("id") Long id) {
+        invoiceService.deleteById(id);
+        return "Invoice deleted successfully";
+    }
+    
+    
 }

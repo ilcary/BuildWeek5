@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.ilCary.EPIC_ENERGY_SERVICES.models.Province;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.User;
 
-public interface UserRepo extends JpaRepository<User, Long> {
+public interface ProvinceRepo extends JpaRepository<Province, Long> {
 
-	Optional<User> findByUsername(String username);
 
 }

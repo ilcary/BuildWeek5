@@ -27,6 +27,24 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+    
+    
+//---------------------------- Get ---------------------------------
+    
+
+    @GetMapping
+    public List<Client> getClientList() {
+        return clientService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public Client getClientById(@PathVariable("id") Long id) {
+        return clientService.getById(id);
+    }
+    
+    
+//---------------------------- Post --------------------------------
+
 
     @PostMapping
     public Client saveClient(
@@ -62,22 +80,9 @@ public class ClientController {
         return clientService.save(client);
     }
 
-    @GetMapping
-    public List<Client> getClientList() {
-        return clientService.getAll();
-    }
 
-    @GetMapping("{id}")
-    public Client getClientById(@PathVariable("id") Long id) {
-        return clientService.getById(id);
-    }
-
-    @DeleteMapping("{id}")
-    public String deleteClientById(@PathVariable("id") Long id) {
-        clientService.deleteById(id);
-        return "Client deleted successfully";
-    }
-
+//---------------------------- Put ---------------------------------
+    
     @PutMapping("{id}")
     public Client updateClient(
             @PathVariable("id") Long id,
@@ -113,5 +118,16 @@ public class ClientController {
         clientService.save(client);
         return client;
     }
+    
+
+  //---------------------------- Delete -------------------------------    
+
+
+    @DeleteMapping("{id}")
+    public String deleteClientById(@PathVariable("id") Long id) {
+        clientService.deleteById(id);
+        return "Client deleted successfully";
+    }
+    
 
 }

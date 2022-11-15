@@ -45,11 +45,11 @@ public class Client {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "Address")
-    private List<Address> addresses;
-    
-    @OneToMany(mappedBy = "Invoice")
-    private List<Invoice> invoices;
+//    @OneToMany(mappedBy = "Address")
+//    private List<Address> addresses;
+//    
+//    @OneToMany(mappedBy = "Invoice")
+//    private List<Invoice> invoices;
     
     private typeClient type;
     

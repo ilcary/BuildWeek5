@@ -33,6 +33,5 @@ public class Address {
 	private String city;
 	
 	@ManyToOne
-	@JoinColumn(name = "client_id")
 	private Client client;
 }

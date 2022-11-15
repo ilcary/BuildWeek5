@@ -26,19 +26,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
-
-    @PostMapping
-    public Role saveRole(
-
-            @RequestParam(value="roleType",required=false) RoleType roleType
-            
-    ) {
-        Role role = Role.builder().build();
-
-        logger.info("Save Role in RoleController");
-        return roleService.save(role);
-    }
-
+    
+//---------------------------- Get ---------------------------------
+    
     @GetMapping
     public List<Role> getRoleList() {
         return roleService.getAll();
@@ -48,13 +38,23 @@ public class RoleController {
     public Role getRoleById(@PathVariable("id") Long id) {
         return roleService.getById(id);
     }
+    
+//---------------------------- Post --------------------------------
 
-    @DeleteMapping("{id}")
-    public String deleteRoleById(@PathVariable("id") Long id) {
-        roleService.deleteById(id);
-        return "Role deleted successfully";
+    @PostMapping
+    public Role saveRole(
+            @RequestParam(value="roleType",required=false) RoleType roleType    
+    ) {
+        Role role = Role.builder()
+        		.roleType(roleType)
+        		.build();
+
+        logger.info("Save Role in RoleController");
+        return roleService.save(role);
     }
 
+//---------------------------- Put ---------------------------------
+    
     @PutMapping("{id}")
     public Role updateRole(
             @PathVariable("id") Long id,
@@ -66,6 +66,14 @@ public class RoleController {
 
         roleService.save(role);
         return role;
+    }
+    
+ //---------------------------- Delete -------------------------------    
+
+    @DeleteMapping("{id}")
+    public String deleteRoleById(@PathVariable("id") Long id) {
+        roleService.deleteById(id);
+        return "Role deleted successfully";
     }
 
 }

@@ -30,6 +30,21 @@ public class UserController {
     
     @Autowired
     private RoleService roleService;
+    
+    
+//---------------------------- Get ---------------------------------
+    
+    @GetMapping
+    public List<User> getUserList() {
+        return userService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public User getUserById(@PathVariable("id") Long id) {
+        return userService.getById(id);
+    }
+    
+//---------------------------- Post --------------------------------
 
     @PostMapping
     public User saveUser(
@@ -45,27 +60,14 @@ public class UserController {
         		.username(username)
         		.email(email)
         		.password(password)
+        		.active(true)
         		.build();
 
         logger.info("Save User in UserController");
         return userService.save(user);
     }
 
-    @GetMapping
-    public List<User> getUserList() {
-        return userService.getAll();
-    }
-
-    @GetMapping("{id}")
-    public User getUserById(@PathVariable("id") Long id) {
-        return userService.getById(id);
-    }
-
-    @DeleteMapping("{id}")
-    public String deleteUserById(@PathVariable("id") Long id) {
-        userService.deleteById(id);
-        return "User deleted successfully";
-    }
+//---------------------------- Put ---------------------------------
     
 	@PutMapping("/{id}/add-role/{roleType}")
 	public void addRole(@PathVariable("id") Long id, @PathVariable("roleType") RoleType roleType) {
@@ -74,6 +76,7 @@ public class UserController {
 		
 		
 		userService.save(u);
+		 logger.info("Role added");
 	}
 
     @PutMapping("{id}")
@@ -96,6 +99,14 @@ public class UserController {
 
         userService.save(user);
         return user;
+    }
+
+//---------------------------- Delete -------------------------------
+
+    @DeleteMapping("{id}")
+    public String deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteById(id);
+        return "User deleted successfully";
     }
 
 }
