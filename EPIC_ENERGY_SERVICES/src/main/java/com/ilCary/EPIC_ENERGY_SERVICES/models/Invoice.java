@@ -27,9 +27,11 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	private Integer number;
 	private Double amount;
 	private LocalDate date;
+	private int year;
+	
+	private InvoiceStatus status;
 	
 	@ManyToOne
 //	@JoinColumn(name = "client_id")

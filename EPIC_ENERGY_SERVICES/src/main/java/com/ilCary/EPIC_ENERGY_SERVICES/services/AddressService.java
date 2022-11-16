@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.AddressAlreadyExistingException;
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Address;
 import com.ilCary.EPIC_ENERGY_SERVICES.repo.AddressRepo;
@@ -13,29 +14,39 @@ import com.ilCary.EPIC_ENERGY_SERVICES.repo.AddressRepo;
 @Service
 public class AddressService {
 
-    @Autowired
-    private AddressRepo repository;
+	@Autowired
+	private AddressRepo repository;
 
-    public Address save(Address x) {
-        return repository.save(x);
-    }
+	public Address save(Address x) {
 
-    public List<Address> getAll() {
-        return repository.findAll();
-    }
+		List<Address> list = repository.findAll();
 
-    public Address getById(Long id) {
+		for (Address address : list) {
 
-        Optional<Address> address = repository.findById(id);
+			if (x.getStreet().equals( address.getStreet()) && x.getStreetNum().equals(address.getStreetNum()) 
+					&& x.getMunicipality().getId() == address.getMunicipality().getId())
+				throw new AddressAlreadyExistingException("Address already existing");
+		}
 
-        if(!address.isPresent())
-            throw new NotFoundException("Address not available");
+		return repository.save(x);
+	}
 
-        return address.get();
-    }
+	public List<Address> getAll() {
+		return repository.findAll();
+	}
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
+	public Address getById(Long id) {
+
+		Optional<Address> address = repository.findById(id);
+
+		if (!address.isPresent())
+			throw new NotFoundException("Address not available");
+
+		return address.get();
+	}
+
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+	}
 
 }
