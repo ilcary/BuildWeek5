@@ -19,4 +19,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
+    
+    @ExceptionHandler(AddressAlreadyExistingException.class)
+    public ResponseEntity<ErrorMessage> AddressAlreadyExistingException(AddressAlreadyExistingException exception) {
+
+        ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT,
+                exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
 }

@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,8 +32,11 @@ public class Address {
 	private String street;
 	private String streetNum;//num civico
 	private String zip;
-	private String city;
 	
 	@ManyToOne
+	private Municipality municipality;
+	
+	@ManyToOne
+	@JsonManagedReference
 	private Client client;
 }

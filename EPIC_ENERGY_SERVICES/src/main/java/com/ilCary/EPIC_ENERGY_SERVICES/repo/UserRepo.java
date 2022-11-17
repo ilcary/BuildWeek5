@@ -1,5 +1,6 @@
 package com.ilCary.EPIC_ENERGY_SERVICES.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
 	Optional<User> findByUsername(String username);
 
+
+	
 }

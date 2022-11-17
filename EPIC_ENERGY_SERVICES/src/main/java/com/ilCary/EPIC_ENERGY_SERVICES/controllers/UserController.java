@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +36,13 @@ public class UserController {
 //---------------------------- Get ---------------------------------
     
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public List<User> getUserList() {
         return userService.getAll();
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public User getUserById(@PathVariable("id") Long id) {
         return userService.getById(id);
     }
@@ -47,6 +50,7 @@ public class UserController {
 //---------------------------- Post --------------------------------
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public User saveUser(
             @RequestParam(value="name",required=false) String name,
             @RequestParam(value="lastname",required=false) String lastname,
@@ -70,6 +74,7 @@ public class UserController {
 //---------------------------- Put ---------------------------------
     
 	@PutMapping("/{id}/add-role/{roleType}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void addRole(@PathVariable("id") Long id, @PathVariable("roleType") RoleType roleType) {
 		User u = userService.getById(id);
 		u.addRole(roleService.getByRole(roleType));
@@ -104,6 +109,7 @@ public class UserController {
 //---------------------------- Delete -------------------------------
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "User deleted successfully";
