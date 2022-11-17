@@ -17,70 +17,83 @@ import com.ilCary.EPIC_ENERGY_SERVICES.services.MunicipalityService;
 import com.ilCary.EPIC_ENERGY_SERVICES.services.ProvinceService;
 
 @RestController
-@RequestMapping("/api/provinces/") 
+@RequestMapping("/api/provinces/")
 public class Init {
 
 	@Autowired
-	 ProvinceService ps;
+	ProvinceService ps;
 
 	@Autowired
-	 MunicipalityService ms;
-	
+	MunicipalityService ms;
+
 //	http://localhost:8080/api/provinces/add
-	
+
 	@GetMapping("add")
 	public void addProvincesAndMunicipalities() {
-	
-	List<List<String>> records = new ArrayList<>();
 
-	Scanner scanner;
+		List<List<String>> records = new ArrayList<>();
 
-	try {
-		scanner = new Scanner(new File("assets/comuni-italiani.csv"));
-		while (scanner.hasNextLine()) {
-			records.add(getRecordFromLine(scanner.nextLine()));
+		List<List<String>> provinces = new ArrayList<>();
+
+		Scanner scanner;
+		Scanner scanner2;
+
+		try {
+
+			scanner = new Scanner(new File("assets/comuni-italiani.csv"));
+			scanner2 = new Scanner(new File("assets/province-italiane.csv"));
+
+			while (scanner.hasNextLine()) {
+				records.add(getRecordFromLine(scanner.nextLine()));
+			}
+			while (scanner2.hasNextLine()) {
+				provinces.add(getRecordFromLine(scanner2.nextLine()));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	}
 
-	String currentP = "0";
-	int i = 0;
+		records.remove(0);
+		provinces.remove(0);
 
-	for (List<String> stringa : records) {
+		// Province
 
-		String[] s = stringa.get(0).split(";");
+		for (List<String> stringa : provinces) {
 
-		String provincia_id = s[0];
-		String provincia_nome = s[3];
-		
-		if (!provincia_id.equals(currentP)) {
+			String[] s = stringa.get(0).split(";");
 
-			Province p = Province.builder().name(provincia_nome).build();
+			String provincia_nome = s[1];
+			String provincia_sigla = s[0];
+			String provincia_regione = s[2];
+
+			Province p = Province.builder().nome(provincia_nome).sigla(provincia_sigla).regione(provincia_regione)
+					.build();
 			ps.save(p);
 
-			currentP = provincia_id;
-
-			i++;
-			
 		}
 
-		String comune_nome = s[2];
+		// Comuni
 
-		Municipality m = Municipality.builder().name(comune_nome).province(ps.getById((long) i)).build();
-		ms.save(m);
-	}
+		for (List<String> stringa : records) {
 
-}
+			String[] s = stringa.get(0).split(";");
+			String comune_nome = s[2];
+			String provincia_nome = s[3];
 
-private List<String> getRecordFromLine(String line) {
-	List<String> values = new ArrayList<String>();
-	try (Scanner rowScanner = new Scanner(line)) {
-		rowScanner.useDelimiter("\n");
-		while (rowScanner.hasNext()) {
-			values.add(rowScanner.next());
+			Municipality m = Municipality.builder().name(comune_nome).province(ps.getByNome(provincia_nome)).build();
+			ms.save(m);
 		}
+
 	}
-	return values;
-}
+
+	private List<String> getRecordFromLine(String line) {
+		List<String> values = new ArrayList<String>();
+		try (Scanner rowScanner = new Scanner(line)) {
+			rowScanner.useDelimiter("\n");
+			while (rowScanner.hasNext()) {
+				values.add(rowScanner.next());
+			}
+		}
+		return values;
+	}
 }

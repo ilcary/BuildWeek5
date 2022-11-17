@@ -38,4 +38,15 @@ public class ProvinceService {
 		repository.deleteById(id);
 	}
 
+	public Province getByNome(String nome) {
+		
+		Optional<Province> province = repository.findByNome(nome);
+		
+		if(!province.isPresent())
+			throw new NotFoundException("Province not available");
+		
+		return province.get();
+	}
+	
+
 }
