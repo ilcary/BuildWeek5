@@ -44,8 +44,8 @@ public class Init {
 		e.printStackTrace();
 	}
 
-	String currentP = "0";
-	int i = 0;
+	String currentP = "0";//1
+	int i = 0;//1
 
 	for (List<String> stringa : records) {
 
@@ -56,12 +56,14 @@ public class Init {
 		
 		if (!provincia_id.equals(currentP)) {
 
+			System.out.println(provincia_id+ " non è uguale a "+currentP+" ----------------------------------------------------------------------");
+			
+			i++;
 			Province p = Province.builder().name(provincia_nome).build();
 			ps.save(p);
 
 			currentP = provincia_id;
 
-			i++;
 			
 		}
 
