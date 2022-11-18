@@ -1,15 +1,17 @@
 package com.ilCary.EPIC_ENERGY_SERVICES.services;
 
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Client;
-import com.ilCary.EPIC_ENERGY_SERVICES.models.User;
 import com.ilCary.EPIC_ENERGY_SERVICES.repo.ClientRepo;
 
 
@@ -23,8 +25,8 @@ public class ClientService {
         return repository.save(x);
     }
 
-    public List<Client> getAll() {
-        return repository.findAll();
+    public Page<Client> getAll(Pageable p) {
+        return repository.findAll(p);
     }
 
     public Client getById(Long id) {
@@ -59,5 +61,22 @@ public class ClientService {
         return repository.findByNomeContattoAndCognomeContattoContaining(string1,string2);
     }
     
+  // ---------------------------- Ordering --------------------------------  
+    
+    public Page<Client> orderByContactName(Pageable p){
+    	return repository.findAllOrderByNomeContatto(p);
+    }
+    
+    public Page<Client> orderByAnnualTurnover(Pageable p){
+    	return repository.findAllOrderByFatturatoAnnuale(p);
+    }
+    
+    public Page<Client> orderByRegistrationDate(Pageable p){
+    	return repository.findAllOrderByDataInserimento(p);
+    }
+    
+    public Page<Client> orderByLastContactDate(Pageable p){
+    	return repository.findAllOrderByDataUltimoContatto(p);
+    }
 
 }
