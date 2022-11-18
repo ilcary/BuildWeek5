@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.DTO.AddressDTO;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Address;
 
+@Component
 public class AddressConverter {
 
 	public AddressDTO entityToDTO(Address address) {

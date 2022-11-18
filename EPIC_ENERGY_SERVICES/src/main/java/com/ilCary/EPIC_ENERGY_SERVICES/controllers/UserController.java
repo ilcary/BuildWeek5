@@ -94,6 +94,7 @@ public class UserController {
 		
 		userService.save(u);
 		 logger.info("Role added");
+		 
 	}
 
     @PutMapping("{id}")
