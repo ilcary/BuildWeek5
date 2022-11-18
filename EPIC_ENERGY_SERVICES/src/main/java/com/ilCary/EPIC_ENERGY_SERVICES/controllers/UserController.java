@@ -5,6 +5,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ilCary.EPIC_ENERGY_SERVICES.models.Invoice;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.RoleType;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.User;
 import com.ilCary.EPIC_ENERGY_SERVICES.services.RoleService;
@@ -30,8 +36,33 @@ public class UserController {
     
     @Autowired
     private RoleService roleService;
+    
+    
+//---------------------------- Get ---------------------------------
+    
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public ResponseEntity<Page<User>> getUserList(Pageable p) {
+    	
+    	Page<User> res = userService.getAll(p);
+        
+    	 if (res.isEmpty()){
+             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+         } else{
+             return new ResponseEntity<>(res, HttpStatus.OK);
+         }
+    }
+
+    @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public User getUserById(@PathVariable("id") Long id) {
+        return userService.getById(id);
+    }
+    
+//---------------------------- Post --------------------------------
 
     @PostMapping
+//    @PreAuthorize("hasRole('ADMIN')")
     public User saveUser(
             @RequestParam(value="name",required=false) String name,
             @RequestParam(value="lastname",required=false) String lastname,
@@ -45,35 +76,24 @@ public class UserController {
         		.username(username)
         		.email(email)
         		.password(password)
+        		.active(true)
         		.build();
 
         logger.info("Save User in UserController");
         return userService.save(user);
     }
 
-    @GetMapping
-    public List<User> getUserList() {
-        return userService.getAll();
-    }
-
-    @GetMapping("{id}")
-    public User getUserById(@PathVariable("id") Long id) {
-        return userService.getById(id);
-    }
-
-    @DeleteMapping("{id}")
-    public String deleteUserById(@PathVariable("id") Long id) {
-        userService.deleteById(id);
-        return "User deleted successfully";
-    }
+//---------------------------- Put ---------------------------------
     
 	@PutMapping("/{id}/add-role/{roleType}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void addRole(@PathVariable("id") Long id, @PathVariable("roleType") RoleType roleType) {
 		User u = userService.getById(id);
 		u.addRole(roleService.getByRole(roleType));
 		
 		
 		userService.save(u);
+		 logger.info("Role added");
 	}
 
     @PutMapping("{id}")
@@ -98,4 +118,33 @@ public class UserController {
         return user;
     }
 
+// -------------------------- Delete -------------------------------
+
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteById(id);
+        return "User deleted successfully";
+    }
+    
+    
+ // ---------------------------- Tests --------------------------   
+    
+    @GetMapping("users-paginate-byname/{name}")
+    public Page<User> getByNameAndPaginate(@PathVariable("name")String name, Pageable p){
+        Page<User> res =  userService.getByNameAndPaginate(name, p);
+        return res;
+
+    }
+    
+    @GetMapping("test/test1")
+    public String test1(){
+        return "java";
+    }
+    
+    @GetMapping("test/test2")
+    public String test2(){
+        return "java";
+    }
+    
 }

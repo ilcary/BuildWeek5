@@ -1,8 +1,9 @@
 package com.ilCary.EPIC_ENERGY_SERVICES.models;
 
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,19 +14,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Data
 @Entity
-@Table(name = "roles")
+@Table(name = "provinces")
+@Data
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Role {
+public class Province {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Enumerated(EnumType.STRING)
-	private RoleType roleType;
+
+	@Column(unique = true, nullable = false)
+	private String nome;
+
+	@Column(unique = true, nullable = false)
+	private String sigla;
+
+	private String regione;
 }
-	

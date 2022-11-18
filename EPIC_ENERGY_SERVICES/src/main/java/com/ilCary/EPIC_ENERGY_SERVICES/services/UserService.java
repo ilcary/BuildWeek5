@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
+import com.ilCary.EPIC_ENERGY_SERVICES.models.Client;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.User;
 import com.ilCary.EPIC_ENERGY_SERVICES.repo.UserRepo;
 
@@ -20,8 +23,8 @@ public class UserService {
         return repository.save(x);
     }
 
-    public List<User> getAll() {
-        return repository.findAll();
+    public Page<User> getAll(Pageable p) {
+        return repository.findAll(p);
     }
 
     public User getById(Long id) {
@@ -37,5 +40,17 @@ public class UserService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+    
+  // ---------------------------- Paging --------------------------------  
+    
+//	public Page<User> getAllAndPaginate(Pageable p){
+//		Page<User> pe = ur.findAll(p);
+//		return pe;
+//	}
+    
+    public Page<User> getByNameAndPaginate(String n, Pageable p){
+		return repository.findByNameAndPaginate(n, p);
+	}
 
+    
 }
