@@ -10,7 +10,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +35,7 @@ import com.ilCary.EPIC_ENERGY_SERVICES.services.MunicipalityService;
 
 @RestController
 @RequestMapping("/api/clients/") //TODO impostare la rotta
+//@CrossOrigin(origins = "*") 
 public class ClientController {
 
     private final Logger logger = LoggerFactory.getLogger(ClientController.class);
@@ -49,8 +55,15 @@ public class ClientController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getClientList() {
-        return clientService.getAll();
+    public ResponseEntity<Page<Client>> getClientList(Pageable p) {
+    	
+    	Page<Client> res = clientService.getAll(p);
+    	
+    	  if (res.isEmpty()){
+              return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+          } else{
+              return new ResponseEntity<>(res, HttpStatus.OK);
+          }
     }
 
     @GetMapping("{id}")
@@ -298,55 +311,66 @@ public class ClientController {
     }
  
 //---------------------- Ordering ---------------------------- 
-    
-//    Provincia della sede legale.
-
+   
     
     @GetMapping("turnover")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getAndOrderByAnnualTurnover() {
+    public ResponseEntity<Page<Client>> getAndOrderByAnnualTurnover(Pageable p) {
    
-    	return clientService.getAll()
-    			.stream()
-    			.sorted(Comparator.comparing(Client::getFatturatoAnnuale))
-    			.collect(Collectors.toList());
+    	Page<Client> res = clientService.orderByAnnualTurnover(p);
+    	
+  	  	if (res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+  	  
     }
     
     @GetMapping("name")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getAndOrderByName() {
+    public ResponseEntity<Page<Client>> getAndOrderByName(Pageable p) {
    
-    	return clientService.getAll()
-    			.stream()
-    			.sorted(Comparator.comparing(Client::getNomeContatto))
-    			.collect(Collectors.toList());
+	Page<Client> res = clientService.orderByContactName(p);
+    	
+  	  	if (res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
     }
     
     @GetMapping("registration_date")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getAndOrderByRegistrationDate() {
+    public ResponseEntity<Page<Client>> getAndOrderByRegistrationDate(Pageable p) {
    
-    	return clientService.getAll()
-    			.stream()
-    			.sorted(Comparator.comparing(Client::getDataInserimento))
-                .collect(Collectors.toList());
+	Page<Client> res = clientService.orderByRegistrationDate(p);
+    	
+  	  	if (res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
     }
     
     @GetMapping("last_contact")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getAndOrderByLastContact() {
+    public ResponseEntity<Page<Client>> getAndOrderByLastContact(Pageable p) {
    
-    	return clientService.getAll()
-    			.stream()
-    			.sorted(Comparator.comparing(Client::getDataUltimoContatto))
-                .collect(Collectors.toList());
+	Page<Client> res = clientService.orderByLastContactDate(p);
+    	
+  	  	if (res.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
     }
     
     @GetMapping("head_office")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public List<Client> getAndOrderByHeadOffice() {
+    public List<Client> getAndOrderByHeadOffice(Pageable p) {
    
-    	return clientService.getAll()
+    	return clientService.getAll(p)
     			.stream()
 //    			.sorted(Comparator.comparing(Client::getSedeLegale))
     			.sorted((i1, i2) -> i2.getSedeLegale().getMunicipality().getProvince().getSigla()

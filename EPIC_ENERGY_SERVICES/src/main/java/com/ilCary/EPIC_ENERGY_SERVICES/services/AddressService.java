@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.AddressAlreadyExistingException;
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Address;
+import com.ilCary.EPIC_ENERGY_SERVICES.models.Client;
 import com.ilCary.EPIC_ENERGY_SERVICES.repo.AddressRepo;
 
 @Service
@@ -31,9 +34,9 @@ public class AddressService {
 		return repository.save(x);
 	}
 
-	public List<Address> getAll() {
-		return repository.findAll();
-	}
+	public Page<Address> getAll(Pageable p) {
+        return repository.findAll(p);
+    }
 
 	public Address getById(Long id) {
 
