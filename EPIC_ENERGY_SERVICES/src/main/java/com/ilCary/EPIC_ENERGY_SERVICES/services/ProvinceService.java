@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
+import com.ilCary.EPIC_ENERGY_SERVICES.models.Client;
 import com.ilCary.EPIC_ENERGY_SERVICES.models.Province;
 import com.ilCary.EPIC_ENERGY_SERVICES.repo.ProvinceRepo;
 
@@ -20,9 +23,9 @@ public class ProvinceService {
 		return repository.save(x);
 	}
 
-	public List<Province> getAll() {
-		return repository.findAll();
-	}
+	public Page<Province> getAll(Pageable p) {
+        return repository.findAll(p);
+    }
 
 	public Province getById(Long id) {
 		

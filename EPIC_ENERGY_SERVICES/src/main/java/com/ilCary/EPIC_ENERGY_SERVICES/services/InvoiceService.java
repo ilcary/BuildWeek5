@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ilCary.EPIC_ENERGY_SERVICES.exceptions.NotFoundException;
@@ -23,8 +25,8 @@ public class InvoiceService {
         return repository.save(x);
     }
 
-    public List<Invoice> getAll() {
-        return repository.findAll();
+    public Page<Invoice> getAll(Pageable p) {
+        return repository.findAll(p);
     }
 
     public Invoice getById(Long id) {
