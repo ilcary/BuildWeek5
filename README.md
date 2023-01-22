@@ -1,7 +1,7 @@
 # EPIC ENERGY SERVICES
 
 Occorre realizzare il backend di un sistema CRM per un'azienda fornitrice di energia, denominata "EPIC ENERGY
-SERVICESII, che vuole gestire i contatti con i propri clienti business.
+SERVICES", che vuole gestire i contatti con i propri clienti business.
 Il sistema, basato su Web Service REST Spring Boot e database PostgreSQL, deve permettere di gestire un elenco
 dei clienti e le relative fatture.
 
@@ -19,12 +19,12 @@ Il sistema, basato su Web Service REST Spring Boot e database PostgreSQL, deve p
 -cognomeContatto
 -telefonoContatto
 
-Ogni cliente puÃ² avere fino a due indirizzi, uno per la sede legale ed uno per la sede operativa.
+Ogni cliente può avere fino a due indirizzi, uno per la sede legale ed uno per la sede operativa.
 
-Un indirizzo Ã¨ composto da 
+Un indirizzo è composto da 
 -via
 -civico
--localitÃ 
+-località
 -cap
 -comune 
 
@@ -37,7 +37,7 @@ SAS
 SPA
 SRL
 
-Associato ad ogni cliente c'Ã¨ un insieme di fatture. Le fatture sono caratterizzate dai seguenti dati:
+Associato ad ogni cliente c'è un insieme di fatture. Le fatture sono caratterizzate dai seguenti dati:
 anno : Integer
 data : Date
 importo : BigDecimal
@@ -70,14 +70,14 @@ Range di importi
 
 Per gestire in modo efficiente un numero cospicuo di elementi, occorre utilizzare la paginazione.
 
-Prevedere inoltre un sistema di autenticazione e autorizzazione basato su token JWT che permetta a diversi utenti di accedere alle funzioni del backend e di registrarsi al sistema. Un utente Ã¨ caratterizzato dalle seguenti proprietÃ :
+Prevedere inoltre un sistema di autenticazione e autorizzazione basato su token JWT che permetta a diversi utenti di accedere alle funzioni del backend e di registrarsi al sistema. Un utente è caratterizzato dalle seguenti proprietà :
 username
 email
 password
 nome
 cognome
 
-Gli utenti possono essere di tipo USER, abilitato alle sole operazioni di lettura, oppure ADMIN, abilitato a tutte le operazioni. Un utente puÃ² avere piÃ¹ ruoli.
+Gli utenti possono essere di tipo USER, abilitato alle sole operazioni di lettura, oppure ADMIN, abilitato a tutte le operazioni. Un utente può avere più ruoli.
 
 * Importazione Comuni e Province
 Viene fornito un elenco dei comuni in formato CSV (elenco-comuni-italiani.csv), che deve essere importato nel sistema per mezzo di una appositoa procedura Java da eseguire manualmente per popolare il db. Viene fornito inoltre un secondo file (elenco-province-italiane.csv) contenente la corrispondenza tra nome provincia e sigla ed anch'esso deve essere importato ed integrato con le informazioni relative ai comuni.
